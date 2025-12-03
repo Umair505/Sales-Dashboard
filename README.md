@@ -162,26 +162,67 @@ Open ➝ http://localhost:3000
 <br/>
 
 ---
+## Usage
 
-<h2 id="structure">📂 Project Structure</h2>
+Once the development server is running, you can interact with the Sales Dashboard:
 
-```txt
-src/
-├── app/
-│   ├── layout.jsx           # Main layout with QueryProvider
-│   └── page.jsx             # Dashboard: state + API logic
-│
-├── components/
-│   ├── dashboard/
-│   │   ├── FilterBar.jsx    # Filter input fields
-│   │   ├── SalesChart.jsx   # Recharts Area Chart
-│   │   └── SalesTable.jsx   # Table with sorting + pagination
-│   └── providers/
-│       └── QueryProvider.jsx # React Query client config
-│
-├── lib/
-│   └── utils.js             # Helper utilities
-<br/>
-<h2 id="optimizations">⚙️ Performance Optimizations</h2> <ul> <li>Cursor-based navigation avoids heavy offset queries</li> <li>React Query caching eliminates unnecessary API calls</li> <li>Skeleton loaders improve perceived speed</li> <li>Charts and tables optimized for large datasets</li> </ul> <br/>
-<h2 align="center">🚀 Live Demo</h2> <p align="center"> <a href="https://sales-dashboard-moinul.vercel.app">sales-dashboard-moinul.vercel.app</a> </p> <br/>
-<p align="center">Developed by Moinul</p> ```
+1.  **Access the Dashboard**: Open `http://localhost:3000` in your web browser.
+2.  **View Sales Overview**: The main page (`src/app/page.js`) displays an initial overview of sales data, including charts and a table.
+3.  **Filter Data**: Use the **Filter Bar** at the top (`src/components/dashboard/FilterBar.jsx`) to refine the displayed sales data. You can filter by:
+    *   Date range (start and end dates)
+    *   Minimum price
+    *   Customer email
+    *   Customer phone number
+    *   Sort order (ascending/descending)
+4.  **Analyze Charts**: The **Sales Chart** (`src/components/dashboard/SalesChart.jsx`) will dynamically update to visualize sales trends based on your applied filters.
+5.  **Explore Table Details**: The **Sales Table** (`src/components/dashboard/SalesTable.jsx`) provides detailed records. You can:
+    *   Sort columns by clicking on their headers.
+    *   Navigate through pages using the pagination controls.
+6.  **Real-time Updates**: The dashboard utilizes TanStack React Query to efficiently fetch and update data, providing a near real-time experience.
+
+## Project Structure
+
+The project follows a standard Next.js application structure with clear separation of concerns:
+
+```
+.
+├── public/                 # Static assets (images, fonts)
+├── src/                    # Main application source code
+│   ├── app/                # Next.js App Router root layout and pages
+│   │   ├── favicon.ico     # Site favicon
+│   │   ├── globals.css     # Global stylesheets
+│   │   ├── layout.js       # Root layout, global providers (QueryProvider, Toaster)
+│   │   └── page.js         # Main dashboard page component
+│   ├── components/         # Reusable React components
+│   │   ├── dashboard/      # Components specific to the dashboard view
+│   │   │   ├── FilterBar.jsx   # UI for filtering sales data
+│   │   │   ├── SalesChart.jsx  # Chart visualization of sales data
+│   │   │   └── SalesTable.jsx  # Table display of sales records
+│   │   ├── providers/      # Context providers for global state
+│   │   │   └── QueryProvider.jsx # TanStack React Query context
+│   │   └── ui/             # Reusable UI primitives (buttons, input, cards, etc.)
+│   ├── hooks/              # Custom React hooks
+│   │   └── useSalesData.js # Hook for fetching and managing sales data
+│   └── lib/                # Utility functions
+│       └── utils.js        # General utility functions (e.g., for Tailwind CSS class merging)
+├── .eslintrc.mjs           # ESLint configuration
+├── jsconfig.json           # JavaScript configuration for VS Code
+├── next.config.mjs         # Next.js configuration
+├── package.json            # Project dependencies and scripts
+├── postcss.config.mjs      # PostCSS configuration (for Tailwind CSS)
+└── README.md               # Project README file
+```
+
+## Contributing
+
+Contributions are welcome! If you'd like to improve this project, please follow these steps:
+
+1.  **Fork** the repository.
+2.  **Clone** your forked repository: `git clone https://github.com/YOUR_USERNAME/Sales-Dashboard.git`
+3.  **Create a new branch**: `git checkout -b feature/your-feature-name`
+4.  **Make your changes**.
+5.  **Commit your changes**: `git commit -m "feat: Add new feature"`
+6.  **Push to the branch**: `git push origin feature/your-feature-name`
+7.  **Open a Pull Request** against the `main` branch of the original repository.
+
+Please ensure your code adheres to the project's coding standards and includes appropriate tests if applicable.
