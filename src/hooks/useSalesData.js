@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 
-export function useSalesData(filters, pagination) {
+export function useSalesData(filters, cursor) {
   const [token, setToken] = useState(null)
 
   useEffect(() => {
     const fetchToken = async () => {
+      const cachedToken = typeof window !== 'undefined' ? sessionStorage.getItem('auth_token') : null
+      if (cachedToken) {
+        setToken(cachedToken)
+        return
+      }
+
       try {
         const res = await fetch("https://autobizz-425913.uc.r.appspot.com/getAuthorize", {
           method: "POST",
@@ -13,16 +19,19 @@ export function useSalesData(filters, pagination) {
           body: JSON.stringify({ tokenType: "frontEndTest" }),
         })
         const data = await res.json()
-        if (data.token) setToken(data.token)
+        if (data.token) {
+          setToken(data.token)
+          sessionStorage.setItem('auth_token', data.token)
+        }
       } catch (error) {
-        console.error(error)
+        console.error("Auth Error:", error)
       }
     }
     fetchToken()
   }, [])
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["sales", token, filters, pagination],
+  const { data, isLoading, isError, isFetching } = useQuery({
+    queryKey: ["sales", filters, cursor], 
     queryFn: async () => {
       if (!token) return null
       
@@ -36,8 +45,8 @@ export function useSalesData(filters, pagination) {
         phone: filters.phone,
       })
 
-      if (pagination.after) params.append("after", pagination.after)
-      if (pagination.before) params.append("before", pagination.before)
+      if (cursor.after) params.append("after", cursor.after)
+      if (cursor.before) params.append("before", cursor.before)
 
       const res = await fetch(`https://autobizz-425913.uc.r.appspot.com/sales?${params.toString()}`, {
         headers: {
@@ -50,13 +59,15 @@ export function useSalesData(filters, pagination) {
     },
     enabled: !!token,
     keepPreviousData: true,
+    staleTime: 1000 * 60 * 5,
   })
 
   return {
     sales: data?.results?.Sales || [],
     totalSales: data?.results?.TotalSales || [],
-    pagination: data?.pagination || { before: "", after: "" },
-    isLoading: isLoading || !token,
+    apiPagination: data?.pagination || { before: "", after: "" },
+    isLoading: isLoading && !data,
+    isFetching,
     isError,
   }
 }

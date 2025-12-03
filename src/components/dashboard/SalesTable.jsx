@@ -3,8 +3,7 @@ import { motion } from "framer-motion"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 
-export default function SalesTable({ data, isLoading, filters, setFilters, pagination, handlePageChange }) {
-  
+export default function SalesTable({ data, isLoading, isFetching, filters, setFilters, paginationState, handlePageChange }) {
   const toggleSort = (column) => {
     const newOrder = filters.sortBy === column && filters.sortOrder === "asc" ? "desc" : "asc"
     setFilters((prev) => ({ ...prev, sortBy: column, sortOrder: newOrder }))
@@ -27,7 +26,14 @@ export default function SalesTable({ data, isLoading, filters, setFilters, pagin
       className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
     >
       <div className="p-6 border-b border-slate-200 flex justify-between items-center">
-        <h3 className="text-lg font-bold text-slate-900">Recent Transactions</h3>
+        <div className="flex items-center gap-3">
+          <h3 className="text-lg font-bold text-slate-900">Recent Transactions</h3>
+          {isFetching && !isLoading && (
+            <span className="text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full flex items-center">
+              <Loader2 className="w-3 h-3 mr-1 animate-spin" /> Updating...
+            </span>
+          )}
+        </div>
       </div>
       
       <div className="overflow-x-auto">
@@ -97,15 +103,19 @@ export default function SalesTable({ data, isLoading, filters, setFilters, pagin
       <div className="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between">
         <button
           onClick={() => handlePageChange("prev")}
-          disabled={!pagination.before || isLoading}
+          disabled={paginationState.index === 0 || isLoading}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           <ChevronLeft className="h-4 w-4" /> Previous
         </button>
 
+        <span className="text-xs font-medium text-slate-400">
+          Page {paginationState.index + 1}
+        </span>
+
         <button
           onClick={() => handlePageChange("next")}
-          disabled={!pagination.after || isLoading}
+          disabled={!paginationState.hasNext || isLoading}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           Next <ChevronRight className="h-4 w-4" />
