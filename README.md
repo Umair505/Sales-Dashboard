@@ -1,188 +1,187 @@
-📊 Sales Analytics Dashboard
+<p align="center">
+  <img src="./public/dashboard.png" alt="Sales Dashboard Banner" width="100%" />
+</p>
+
+<h1 align="center">📊 Sales Analytics Dashboard</h1>
+<p align="center">A clean, high-performance dashboard for visualizing and exploring sales data with cursor-based pagination.</p>
+
+<br/>
+
+---
+
+<h2>📌 Table of Contents</h2>
+
+- <a href="#overview">Overview</a>
+- <a href="#features">Key Features</a>
+- <a href="#tech">Tech Stack</a>
+- <a href="#architecture">Architecture & Decisions</a>
+- <a href="#getting-started">Getting Started</a>
+- <a href="#structure">Project Structure</a>
+- <a href="#optimizations">Performance Optimizations</a>
+
+---
+
+<h2 id="overview">🔎 Overview</h2>
+
+This dashboard interacts with a Sales API to authenticate users, fetch transaction data, apply real-time filters, and visualize sales trends over time.
+
+The main challenge of this build was handling **Cursor-Based Pagination (before/after tokens)** and crafting a smooth Next/Previous navigation experience without re-fetching stale data.
+
+<br/>
+
+---
+
+<h2 id="features">✨ Key Features</h2>
+
+<h3>1. 🔍 Advanced Filtering</h3>
+<ul>
+  <li>Date filtering with Start and End range</li>
+  <li>Minimum price search</li>
+  <li>Email and Phone filtering</li>
+  <li>Instant data refresh on filter updates</li>
+</ul>
+
+<h3>2. 📈 Data Visualization</h3>
+<ul>
+  <li>Interactive time-series Area Chart (Recharts)</li>
+  <li>Responsive design across all screen sizes</li>
+</ul>
+
+<h3>3. ⚡ Smart Pagination</h3>
+<ul>
+  <li>Before/After cursor-based API navigation</li>
+  <li>History Stack to solve the Previous Page problem</li>
+  <li>No stale data or repeated requests</li>
+</ul>
+
+<h3>4. 📊 Interactive Data Table</h3>
+<ul>
+  <li>Server-side sorting (Date + Price)</li>
+  <li>Loading skeletons for smooth UX</li>
+</ul>
+
+<h3>5. 💾 Caching & State Management</h3>
+<ul>
+  <li>React Query for server state management</li>
+  <li>Instant back navigation using caching</li>
+</ul>
+
+<br/>
+
+---
+
+<h2 id="tech">🛠 Tech Stack</h2>
+
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Technology</th>
+    <th>Purpose</th>
+  </tr>
+  <tr>
+    <td>Framework</td>
+    <td>Next.js 14</td>
+    <td>App structure & routing</td>
+  </tr>
+  <tr>
+    <td>Styling</td>
+    <td>Tailwind CSS</td>
+    <td>Responsive UI design</td>
+  </tr>
+  <tr>
+    <td>State / Async</td>
+    <td>React Query</td>
+    <td>Data fetching, caching</td>
+  </tr>
+  <tr>
+    <td>Charting</td>
+    <td>Recharts</td>
+    <td>Sales trend visualization</td>
+  </tr>
+  <tr>
+    <td>Animation</td>
+    <td>Framer Motion</td>
+    <td>Visual transitions</td>
+  </tr>
+  <tr>
+    <td>Icons</td>
+    <td>Lucide React</td>
+    <td>Clean SVG icons</td>
+  </tr>
+</table>
 
-A high-performance, responsive sales dashboard built to visualize transaction data, filter records in real-time, and handle large datasets using cursor-based pagination.
+<br/>
 
-🚀 View Live Demo[https://sales-dashboard-moinul.vercel.app](https://sales-dashboard-moinul.vercel.app) 
+---
 
-📝 Table of Contents
+<h2 id="architecture">🧠 Architecture & Decisions</h2>
 
-Overview
+<h3>Why React Query?</h3>
+<ul>
+  <li>Prevents duplicate requests</li>
+  <li>Caches each page for instant back navigation</li>
+  <li>Provides isLoading / isFetching for better UX</li>
+</ul>
 
-Key Features
+<h3>Pagination Problem & Solution</h3>
+<p>The Sales API uses before/after cursor-based pagination, which makes navigating backwards difficult.</p>
 
-Tech Stack
+<p><strong>Solution:</strong></p>
 
-Architecture & Decisions
+<ul>
+  <li>A <strong>Navigation History Stack</strong> stores previous cursors.</li>
+  <li>Next → Push current cursor</li>
+  <li>Previous → Pop cursor from history</li>
+  <li>Ensures smooth and accurate page navigation</li>
+</ul>
 
-Getting Started
+<br/>
 
-Project Structure
+---
 
-Performance Optimizations
+<h2 id="getting-started">🚀 Getting Started</h2>
 
-🔎 Overview
+<h3>Prerequisites</h3>
+<ul>
+  <li>Node.js 18+</li>
+  <li>npm or yarn</li>
+</ul>
 
-This project is a technical assessment implementation designed to interact with a Sales API. It authenticates users, fetches sales data based on complex filtering criteria, and visualizes the trends over time.
+<h3>Installation Steps</h3>
 
-The core challenge involved implementing Cursor-based Pagination (Before/After tokens) while ensuring a seamless "Previous/Next" navigation experience without re-fetching stale data.
-
-✨ Key Features
-
-1. 🔍 Advanced Filtering
-
-Date Range: Filter sales between specific Start and End dates.
-
-Granular Search: Filter by Minimum Price, Customer Email, and Phone Number.
-
-Real-time Updates: Dashboard automatically refreshes when filters are applied.
-
-2. 📈 Data Visualization
-
-Time-Series Chart: An interactive Area Chart (powered by Recharts) showing total sales trends over time.
-
-Responsive Design: Charts scale beautifully across Desktop, Tablet, and Mobile.
-
-3. ⚡ Smart Pagination & Navigation
-
-Cursor-based Logic: Implements before and after token logic compliant with the API.
-
-History Stack: Solves the common "Previous Button" issue in cursor pagination by maintaining a local history stack, allowing users to navigate back accurately.
-
-4. 📊 Interactive Data Table
-
-Sorting: Server-side sorting for Date and Price columns (Ascending/Descending).
-
-Status Indicators: Loading states and skeletons for a polished UX.
-
-5. 💾 Caching & State Management
-
-Instant Back Navigation: Uses React Query to cache page data. Returning to a previous page loads instantly without a network request.
-
-🛠 Tech Stack
-
-Category
-
-Technology
-
-Usage
-
-Framework
-
-Next.js 14 (App Router)
-
-Core application structure and routing.
-
-Styling
-
-Tailwind CSS
-
-Utility-first styling for responsiveness.
-
-UI Components
-
-Shadcn/UI (Concepts)
-
-Accessible, reusable UI patterns.
-
-State/Async
-
-TanStack Query (React Query)
-
-Server state management, caching, and background refetching.
-
-Charts
-
-Recharts
-
-Composable charting library for React.
-
-Icons
-
-Lucide React
-
-Clean, consistent SVG icons.
-
-Animation
-
-Framer Motion
-
-Smooth entrance animations for tables and charts.
-
-Utils
-
-date-fns
-
-Date formatting and manipulation.
-
-🧠 Architecture & Decisions
-
-Why React Query?
-
-The application requires frequent server synchronization (filtering, sorting, paging). React Query was chosen to:
-
-Deduplicate requests: Prevent multiple API calls for the same data.
-
-Cache Data: Implements the "Bonus" requirement where revisiting a filter or page loads instantly.
-
-Manage Loading States: Provides isLoading and isFetching flags for better UI feedback.
-
-The Pagination Challenge
-
-The API uses before and after cursors. A common pitfall is that moving "Previous" is difficult because you often don't have the before token for the very first page, or the API logic is strictly unidirectional.
-
-Solution: I implemented a Navigation History Stack.
-
-When the user clicks Next, the current cursor is pushed to history.
-
-When the user clicks Previous, we pop from history and use the stored cursor.
-
-This ensures the UI never gets "stuck" and the Previous button works reliably.
-
-🚀 Getting Started
-
-Follow these steps to run the project locally.
-
-Prerequisites
-
-Node.js 18+ installed
-
-npm or yarn
-
-Installation
-
-Clone the repository
-
-git clone [https://github.com/Umair505/Sales-Dashboard](https://github.com/Umair505/Sales-Dashboard)
+git clone https://github.com/Umair505/Sales-Dashboard
 cd sales-dashboard
-
-
-Install Dependencies
-
 npm install
-
-
-Run the Development Server
-
 npm run dev
 
+yaml
+Copy code
 
-Access the App
-Open http://localhost:3000 in your browser.
+Open ➝ http://localhost:3000
 
-📂 Project Structure
+<br/>
 
+---
+
+<h2 id="structure">📂 Project Structure</h2>
+
+```txt
 src/
 ├── app/
-│   ├── layout.jsx        # Root layout with QueryProvider
-│   └── page.jsx          # Main Dashboard Controller (State & Logic)
+│   ├── layout.jsx           # Main layout with QueryProvider
+│   └── page.jsx             # Dashboard: state + API logic
+│
 ├── components/
 │   ├── dashboard/
-│   │   ├── FilterBar.jsx    # Inputs for dates and search
+│   │   ├── FilterBar.jsx    # Filter input fields
 │   │   ├── SalesChart.jsx   # Recharts Area Chart
-│   │   └── SalesTable.jsx   # Data grid with sorting/paging
+│   │   └── SalesTable.jsx   # Table with sorting + pagination
 │   └── providers/
-│       └── QueryProvider.jsx # React Query Client Config
-├── hooks/
-│   └── useSalesData.js   # Custom hook for API logic (Integrated in page for this build)
-└── lib/
-    └── utils.js          # Tailwind class merger
+│       └── QueryProvider.jsx # React Query client config
+│
+├── lib/
+│   └── utils.js             # Helper utilities
+<br/>
+<h2 id="optimizations">⚙️ Performance Optimizations</h2> <ul> <li>Cursor-based navigation avoids heavy offset queries</li> <li>React Query caching eliminates unnecessary API calls</li> <li>Skeleton loaders improve perceived speed</li> <li>Charts and tables optimized for large datasets</li> </ul> <br/>
+<h2 align="center">🚀 Live Demo</h2> <p align="center"> <a href="https://sales-dashboard-moinul.vercel.app">sales-dashboard-moinul.vercel.app</a> </p> <br/>
+<p align="center">Developed by Moinul</p> ```
